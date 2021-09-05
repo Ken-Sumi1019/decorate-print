@@ -51,6 +51,32 @@ impl Decobuilder {
     pub fn white(&mut self, s: &str) -> &mut Decobuilder {
         self.color_deco("m", "37", s)
     }
+
+    // Move the cursor
+
+    pub fn move_cursor_up(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("A", &n.to_string())
+    }
+
+    pub fn move_cursor_down(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("B", &n.to_string())
+    }
+
+    pub fn move_cursor_right(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("C", &n.to_string())
+    }
+
+    pub fn move_cursor_left(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("D", &n.to_string())
+    }
+
+    pub fn move_cursor_down_begining(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("E", &n.to_string())
+    }
+
+    pub fn move_cursor_up_begining(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("F", &n.to_string())
+    }
 }
 
 #[cfg(test)]
