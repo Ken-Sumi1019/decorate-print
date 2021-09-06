@@ -77,6 +77,10 @@ impl Decobuilder {
     pub fn move_cursor_up_begining(&mut self, n: i32) -> &mut Decobuilder {
         self.escape_code("F", &n.to_string())
     }
+
+    pub fn move_cursor_from_left_edge(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("G", &n.to_string())
+    }
 }
 
 #[cfg(test)]
@@ -130,5 +134,54 @@ mod tests {
         let mut foo = Decobuilder::new("".to_string());
         foo.red("white");
         assert_eq!("\u{001b}[31mwhite\u{001b}[0m", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_up() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_up(5);
+        assert_eq!("sample text\u{001b}[5A", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_down() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_down(5);
+        assert_eq!("sample text\u{001b}[5B", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_right() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_right(5);
+        assert_eq!("sample text\u{001b}[5C", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_left() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_left(5);
+        assert_eq!("sample text\u{001b}[5D", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_down_begining() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_down_begining(5);
+        assert_eq!("sample text\u{001b}[5E", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_up_begining() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_up_begining(5);
+        assert_eq!("sample text\u{001b}[5F", foo.body);
+    }
+
+    #[test]
+    fn move_cursor_from_left_edge() {
+        let mut foo = Decobuilder::new("sample text".to_string());
+        foo.move_cursor_from_left_edge(5);
+        assert_eq!("sample text\u{001b}[5G", foo.body);
     }
 }
