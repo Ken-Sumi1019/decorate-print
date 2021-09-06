@@ -56,6 +56,44 @@ impl Decobuilder {
         self.color_deco("m", 37, s)
     }
 
+    // Background color
+
+    pub fn plain_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 49)
+    }
+
+    pub fn black_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 40)
+    }
+
+    pub fn red_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 41)
+    }
+
+    pub fn green_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 42)
+    }
+
+    pub fn yellow_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 43)
+    }
+
+    pub fn blue_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 44)
+    }
+
+    pub fn magenta_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 45)
+    }
+
+    pub fn cyan_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 46)
+    }
+
+    pub fn white_bg(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 47)
+    }
+
     // Move the cursor
 
     pub fn move_cursor_up(&mut self, n: i32) -> &mut Decobuilder {
@@ -104,8 +142,8 @@ mod tests {
     #[test]
     fn black_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("black");
-        assert_eq!("\u{001b}[31mblack", foo.body);
+        foo.black("black");
+        assert_eq!("\u{001b}[30mblack", foo.body);
     }
     #[test]
     fn red_string() {
@@ -116,39 +154,99 @@ mod tests {
     #[test]
     fn green_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("green");
-        assert_eq!("\u{001b}[31mgreen", foo.body);
+        foo.green("green");
+        assert_eq!("\u{001b}[32mgreen", foo.body);
     }
     #[test]
     fn yellow_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("yellow");
-        assert_eq!("\u{001b}[31myellow", foo.body);
+        foo.yellow("yellow");
+        assert_eq!("\u{001b}[33myellow", foo.body);
     }
     #[test]
     fn blue_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("blue");
-        assert_eq!("\u{001b}[31mblue", foo.body);
+        foo.blue("blue");
+        assert_eq!("\u{001b}[34mblue", foo.body);
     }
     #[test]
     fn magenta_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("magenta");
-        assert_eq!("\u{001b}[31mmagenta", foo.body);
+        foo.magenta("magenta");
+        assert_eq!("\u{001b}[35mmagenta", foo.body);
     }
     #[test]
     fn cyan_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("cyan");
-        assert_eq!("\u{001b}[31mcyan", foo.body);
+        foo.cyan("cyan");
+        assert_eq!("\u{001b}[36mcyan", foo.body);
     }
     #[test]
     fn white_string() {
         let mut foo = Decobuilder::new("");
-        foo.red("white");
-        assert_eq!("\u{001b}[31mwhite", foo.body);
+        foo.white("white");
+        assert_eq!("\u{001b}[37mwhite", foo.body);
     }
+
+    // Background color
+
+    #[test]
+    fn black_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.black_bg();
+        assert_eq!("\u{001b}[40m", foo.body);
+    }
+
+    #[test]
+    fn red_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.red_bg();
+        assert_eq!("\u{001b}[41m", foo.body);
+    }
+
+    #[test]
+    fn green_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.green_bg();
+        assert_eq!("\u{001b}[42m", foo.body);
+    }
+
+    #[test]
+    fn yellow_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.yellow_bg();
+        assert_eq!("\u{001b}[43m", foo.body);
+    }
+
+    #[test]
+    fn blue_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.blue_bg();
+        assert_eq!("\u{001b}[44m", foo.body);
+    }
+
+    #[test]
+    fn magenta_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.magenta_bg();
+        assert_eq!("\u{001b}[45m", foo.body);
+    }
+
+    #[test]
+    fn cyan_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.cyan_bg();
+        assert_eq!("\u{001b}[46m", foo.body);
+    }
+
+    #[test]
+    fn white_bg() {
+        let mut foo = Decobuilder::new("");
+        foo.white_bg();
+        assert_eq!("\u{001b}[47m", foo.body);
+    }
+
+    // cursor
 
     #[test]
     fn move_cursor_up() {
