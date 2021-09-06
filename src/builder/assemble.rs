@@ -12,86 +12,88 @@ impl Decobuilder {
         self
     }
 
-    pub fn escape_code(&mut self, order: &str, v: &str) -> &mut Decobuilder {
+    pub fn escape_code(&mut self, order: &str, v: i32) -> &mut Decobuilder {
         self.row_text(format!("\u{001b}[{a}{b}", a = v, b = order).as_str())
     }
 
-    fn color_deco(&mut self, order: &str, n: &str, val: &str) -> &mut Decobuilder {
-        self.escape_code(order, n)
-            .row_text(val)
-            .escape_code(order, "0")
+    fn color_deco(&mut self, order: &str, n: i32, val: &str) -> &mut Decobuilder {
+        self.escape_code(order, n).row_text(val)
+    }
+
+    pub fn plain_text(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 39)
     }
 
     pub fn black(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "30", s)
+        self.color_deco("m", 30, s)
     }
 
     pub fn red(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "31", s)
+        self.color_deco("m", 31, s)
     }
 
     pub fn green(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "32", s)
+        self.color_deco("m", 32, s)
     }
 
     pub fn yellow(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "33", s)
+        self.color_deco("m", 33, s)
     }
 
     pub fn blue(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "34", s)
+        self.color_deco("m", 34, s)
     }
 
     pub fn magenta(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "35", s)
+        self.color_deco("m", 35, s)
     }
 
     pub fn cyan(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "36", s)
+        self.color_deco("m", 36, s)
     }
 
     pub fn white(&mut self, s: &str) -> &mut Decobuilder {
-        self.color_deco("m", "37", s)
+        self.color_deco("m", 37, s)
     }
 
     // Move the cursor
 
     pub fn move_cursor_up(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("A", &n.to_string())
+        self.escape_code("A", n)
     }
 
     pub fn move_cursor_down(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("B", &n.to_string())
+        self.escape_code("B", n)
     }
 
     pub fn move_cursor_right(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("C", &n.to_string())
+        self.escape_code("C", n)
     }
 
     pub fn move_cursor_left(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("D", &n.to_string())
+        self.escape_code("D", n)
     }
 
     pub fn move_cursor_down_begining(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("E", &n.to_string())
+        self.escape_code("E", n)
     }
 
     pub fn move_cursor_up_begining(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("F", &n.to_string())
+        self.escape_code("F", n)
     }
 
     pub fn move_cursor_from_left_edge(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("G", &n.to_string())
+        self.escape_code("G", n)
     }
 
     // remove
 
     pub fn remove_screen(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("J", &n.to_string())
+        self.escape_code("J", n)
     }
 
     pub fn remove_row(&mut self, n: i32) -> &mut Decobuilder {
-        self.escape_code("K", &n.to_string())
+        self.escape_code("K", n)
     }
 }
 
@@ -103,49 +105,49 @@ mod tests {
     fn black_string() {
         let mut foo = Decobuilder::new("");
         foo.red("black");
-        assert_eq!("\u{001b}[31mblack\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mblack", foo.body);
     }
     #[test]
     fn red_string() {
         let mut foo = Decobuilder::new("");
         foo.red("red");
-        assert_eq!("\u{001b}[31mred\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mred", foo.body);
     }
     #[test]
     fn green_string() {
         let mut foo = Decobuilder::new("");
         foo.red("green");
-        assert_eq!("\u{001b}[31mgreen\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mgreen", foo.body);
     }
     #[test]
     fn yellow_string() {
         let mut foo = Decobuilder::new("");
         foo.red("yellow");
-        assert_eq!("\u{001b}[31myellow\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31myellow", foo.body);
     }
     #[test]
     fn blue_string() {
         let mut foo = Decobuilder::new("");
         foo.red("blue");
-        assert_eq!("\u{001b}[31mblue\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mblue", foo.body);
     }
     #[test]
     fn magenta_string() {
         let mut foo = Decobuilder::new("");
         foo.red("magenta");
-        assert_eq!("\u{001b}[31mmagenta\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mmagenta", foo.body);
     }
     #[test]
     fn cyan_string() {
         let mut foo = Decobuilder::new("");
         foo.red("cyan");
-        assert_eq!("\u{001b}[31mcyan\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mcyan", foo.body);
     }
     #[test]
     fn white_string() {
         let mut foo = Decobuilder::new("");
         foo.red("white");
-        assert_eq!("\u{001b}[31mwhite\u{001b}[0m", foo.body);
+        assert_eq!("\u{001b}[31mwhite", foo.body);
     }
 
     #[test]
