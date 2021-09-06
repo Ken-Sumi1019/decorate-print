@@ -94,6 +94,48 @@ impl Decobuilder {
         self.escape_code("m", 47)
     }
 
+    // type
+
+    pub fn reset(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 0)
+    }
+
+    pub fn bold(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 1)
+    }
+
+    pub fn gloomy(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 2)
+    }
+
+    pub fn italic(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 3)
+    }
+
+    pub fn underline(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 4)
+    }
+
+    pub fn blink(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 5)
+    }
+
+    pub fn rapid_blink(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 6)
+    }
+
+    pub fn invert(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 7)
+    }
+
+    pub fn conceal(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 8)
+    }
+
+    pub fn strike(&mut self) -> &mut Decobuilder {
+        self.escape_code("m", 9)
+    }
+
     // Move the cursor
 
     pub fn move_cursor_up(&mut self, n: i32) -> &mut Decobuilder {
@@ -244,6 +286,77 @@ mod tests {
         let mut foo = Decobuilder::new("");
         foo.white_bg();
         assert_eq!("\u{001b}[47m", foo.body);
+    }
+
+    // type
+    #[test]
+    fn reset() {
+        let mut foo = Decobuilder::new("");
+        foo.reset();
+        assert_eq!("\u{001b}[0m", foo.body);
+    }
+
+    #[test]
+    fn bold() {
+        let mut foo = Decobuilder::new("");
+        foo.bold();
+        assert_eq!("\u{001b}[1m", foo.body);
+    }
+
+    #[test]
+    fn gloomy() {
+        let mut foo = Decobuilder::new("");
+        foo.gloomy();
+        assert_eq!("\u{001b}[2m", foo.body);
+    }
+
+    #[test]
+    fn italic() {
+        let mut foo = Decobuilder::new("");
+        foo.italic();
+        assert_eq!("\u{001b}[3m", foo.body);
+    }
+
+    #[test]
+    fn underline() {
+        let mut foo = Decobuilder::new("");
+        foo.underline();
+        assert_eq!("\u{001b}[4m", foo.body);
+    }
+
+    #[test]
+    fn blink() {
+        let mut foo = Decobuilder::new("");
+        foo.blink();
+        assert_eq!("\u{001b}[5m", foo.body);
+    }
+
+    #[test]
+    fn rapid_blink() {
+        let mut foo = Decobuilder::new("");
+        foo.rapid_blink();
+        assert_eq!("\u{001b}[6m", foo.body);
+    }
+
+    #[test]
+    fn invert() {
+        let mut foo = Decobuilder::new("");
+        foo.invert();
+        assert_eq!("\u{001b}[7m", foo.body);
+    }
+
+    #[test]
+    fn conceal() {
+        let mut foo = Decobuilder::new("");
+        foo.conceal();
+        assert_eq!("\u{001b}[8m", foo.body);
+    }
+
+    #[test]
+    fn strike() {
+        let mut foo = Decobuilder::new("");
+        foo.strike();
+        assert_eq!("\u{001b}[9m", foo.body);
     }
 
     // cursor
