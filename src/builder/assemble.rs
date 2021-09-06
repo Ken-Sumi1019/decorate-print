@@ -1,8 +1,10 @@
 use super::Decobuilder;
 
 impl Decobuilder {
-    pub fn new(s: String) -> Decobuilder {
-        Decobuilder { body: s }
+    pub fn new(s: &str) -> Decobuilder {
+        Decobuilder {
+            body: s.to_string(),
+        }
     }
 
     pub fn row_text(&mut self, s: &str) -> &mut Decobuilder {
@@ -81,6 +83,16 @@ impl Decobuilder {
     pub fn move_cursor_from_left_edge(&mut self, n: i32) -> &mut Decobuilder {
         self.escape_code("G", &n.to_string())
     }
+
+    // remove
+
+    pub fn remove_screen(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("J", &n.to_string())
+    }
+
+    pub fn remove_row(&mut self, n: i32) -> &mut Decobuilder {
+        self.escape_code("K", &n.to_string())
+    }
 }
 
 #[cfg(test)]
@@ -89,99 +101,113 @@ mod tests {
 
     #[test]
     fn black_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("black");
         assert_eq!("\u{001b}[31mblack\u{001b}[0m", foo.body);
     }
     #[test]
     fn red_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("red");
         assert_eq!("\u{001b}[31mred\u{001b}[0m", foo.body);
     }
     #[test]
     fn green_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("green");
         assert_eq!("\u{001b}[31mgreen\u{001b}[0m", foo.body);
     }
     #[test]
     fn yellow_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("yellow");
         assert_eq!("\u{001b}[31myellow\u{001b}[0m", foo.body);
     }
     #[test]
     fn blue_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("blue");
         assert_eq!("\u{001b}[31mblue\u{001b}[0m", foo.body);
     }
     #[test]
     fn magenta_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("magenta");
         assert_eq!("\u{001b}[31mmagenta\u{001b}[0m", foo.body);
     }
     #[test]
     fn cyan_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("cyan");
         assert_eq!("\u{001b}[31mcyan\u{001b}[0m", foo.body);
     }
     #[test]
     fn white_string() {
-        let mut foo = Decobuilder::new("".to_string());
+        let mut foo = Decobuilder::new("");
         foo.red("white");
         assert_eq!("\u{001b}[31mwhite\u{001b}[0m", foo.body);
     }
 
     #[test]
     fn move_cursor_up() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_up(5);
         assert_eq!("sample text\u{001b}[5A", foo.body);
     }
 
     #[test]
     fn move_cursor_down() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_down(5);
         assert_eq!("sample text\u{001b}[5B", foo.body);
     }
 
     #[test]
     fn move_cursor_right() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_right(5);
         assert_eq!("sample text\u{001b}[5C", foo.body);
     }
 
     #[test]
     fn move_cursor_left() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_left(5);
         assert_eq!("sample text\u{001b}[5D", foo.body);
     }
 
     #[test]
     fn move_cursor_down_begining() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_down_begining(5);
         assert_eq!("sample text\u{001b}[5E", foo.body);
     }
 
     #[test]
     fn move_cursor_up_begining() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_up_begining(5);
         assert_eq!("sample text\u{001b}[5F", foo.body);
     }
 
     #[test]
     fn move_cursor_from_left_edge() {
-        let mut foo = Decobuilder::new("sample text".to_string());
+        let mut foo = Decobuilder::new("sample text");
         foo.move_cursor_from_left_edge(5);
         assert_eq!("sample text\u{001b}[5G", foo.body);
+    }
+
+    #[test]
+    fn remove_screen() {
+        let mut foo = Decobuilder::new("sample text");
+        foo.remove_screen(0);
+        assert_eq!("sample text\u{001b}[0J", foo.body);
+    }
+
+    #[test]
+    fn remove_row() {
+        let mut foo = Decobuilder::new("sample text");
+        foo.remove_row(0);
+        assert_eq!("sample text\u{001b}[0K", foo.body);
     }
 }
